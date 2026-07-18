@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+find_jar() {
+    if [ -n "${GIT_GUARDIAN_HOME:-}" ]; then
+        local jar="$GIT_GUARDIAN_HOME/gitGuardian-all.jar"
+        if [ -f "$jar" ]; then echo "$jar"; return; fi
+    fi
+
+    local dev_jar="$SCRIPT_DIR/build/libs/KMP-Code-Guardian-all.jar"
+    if [ -f "$dev_jar" ]; then echo "$dev_jar"; return; fi
+
+    local home="${HOME:-}"
+    local jar="$home/.gitGuardian/gitGuardian-all.jar"
+    if [ -f "$jar" ]; then echo "$jar"; return; fi
+
+    return 1
+}
+
+JAR="$(find_jar)" || {
+    echo "[error] gitGuardian JAR not found."
+    echo ""
+    echo "Build: cd $(dirname "$SCRIPT_DIR") && ./gradlew shadowJar"
+    exit 1
+}
+
+exec java -Xmx512m -jar "$JAR" "$@"

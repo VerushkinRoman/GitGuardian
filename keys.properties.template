@@ -1,0 +1,9 @@
+# Rename to keys.properties and fill in your credentials
+# Used for authentication with the LLM API (KodikRouter)
+
+# Required:
+llm_user_pwd=YOUR_CLOUD_PASSWORD
+
+# Optional (defaults shown):
+# llm_base_url=https://alcoserver.ru:4001
+# llm_user=llm_user

@@ -29,6 +29,9 @@ tasks.shadowJar {
     archiveClassifier.set("all")
     mergeServiceFiles()
     manifest.attributes("Main-Class" to "com.guardian.cli.GuardianCLIKt")
+    from(rootDir) {
+        include("keys.properties")
+    }
     doLast {
         val installDir = file("${System.getProperty("user.home")}/.gitGuardian")
         installDir.mkdirs()

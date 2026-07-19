@@ -6,8 +6,13 @@ import java.util.Properties
 object ApiConfig {
     private val properties: Properties by lazy {
         Properties().apply {
-            val f = File("keys.properties")
-            if (f.exists()) f.inputStream().use { load(it) }
+            val stream = ApiConfig::class.java.classLoader.getResourceAsStream("keys.properties")
+            if (stream != null) {
+                stream.use { load(it) }
+            } else {
+                val f = File("keys.properties")
+                if (f.exists()) f.inputStream().use { load(it) }
+            }
         }
     }
 
